@@ -6,8 +6,8 @@
  * Cuando se ejecuta en cascada  soft delete se eliminan de manera permanente
 */
 
-const Subcategory = require('../models/Subcategory');
-const Category = require('../models/Category');
+const Subcategory = require('../Subcategory');
+const Category = require('../Category');
 
 /**
  * Create: crear nueva categoria
@@ -222,7 +222,7 @@ exports.updateSubcategory = async (req, res) => {
 
 exports.deleteSubcategory = async (req, res) => {
     try {
-        const Product = require('../models/Product');
+        const Product = require('../Product');
         const isHardDelete = req.query.hardDelete === 'true';
 
         // Buscar la categoria a eliminar
