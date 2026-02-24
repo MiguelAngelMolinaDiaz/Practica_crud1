@@ -282,7 +282,8 @@ exports.deleteUser = async (req, res) => {
             await User.findByIdAndDelete(req.params.id);
             res.status(200).json({
                 success: true,
-                message: 'Usuario eliminado permanentemente'
+                message: 'Usuario eliminado permanentemente',
+                data: userToDelete
             });
 
             // Soft delete: desactivar usuario
@@ -291,8 +292,16 @@ exports.deleteUser = async (req, res) => {
             await userToDelete.save();
             res.status(200).json({
                 success: true,
-                message: 'Usuario desactivado'
+                message: 'Usuario desactivado',
+                data: userToDelete
             });
         }
+    } catch (error) {
+        console.error("Error en deleteUser:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error al eliminar el usuario",
+            error: error.message
+        });
     } 
-}
+};
