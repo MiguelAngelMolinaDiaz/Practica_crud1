@@ -1,8 +1,6 @@
 /**
  * MIDDLEWARE control de roles de usuario 
- * 
  * sirve para verificar que el usuario autenticado tiene permiso necesarios para acceder a una ruta especifica 
- * 
  * funcion factory checckRole() permite especificar los roles permitidos 
  * funcion Helper para roles especificos isAdmin, isCoordinador, isAuxiliar
  * Requiere que el veryfyToken se haya ejecutado primero 
@@ -12,15 +10,14 @@
  * si esta en lita continua 
  * si no esta en la lista retorna 403 Forbiden con mensaje descriptivo
  * si no existe userRole retorna 401(token corructo)
- * 
- * uso:
+ * Uso:
  * checkRole('admin') solo admin
  * checkRole('admin', 'coordinador') admin y coordinador con permisos
  * checkRole('admin', 'coordinador', 'auxiliar') admin y todos con permisos
  *Roles del sistema:
- *admin acceso total
- *coordinador no puede eliminar al gestionar usuarios
- *auziliar acceso lomotado a tareas especificas
+ * admin acceso total
+ * coordinador no puede eliminar al gestionar usuarios
+ * auxiliar acceso limitado a tareas especificas
  */
 
 /**
@@ -31,7 +28,7 @@
  */
 const checkRole = (...allowedRoles) => {
     return (req, res, next) => {
-        //validar que el usuario fue autenticado y veryfyToken ejecutado
+        //Validar que el usuario fue autenticado y veryfyToken ejecutado
         //req,userRole es establecido por veryfyToken middleware
         if(!req.userRole) {
             return res.status(401).json({
