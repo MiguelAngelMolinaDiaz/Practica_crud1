@@ -4,8 +4,8 @@
  * el producto depende de una subcategoria y subcategoria depende de una categoria
  * muchos productos pueden pertenecer a una subcategoria
  * tiene relacion un user para ver quien creo el producto
- * soporte de imagenes (array de url)
- * validacion de valores numericos (no negativos)
+ * soporte de imagenes (array de url) no consume espacio en la base de datos 
+ * validacion de valores numericos (no sean directamente negativos)
  */
 
 const mongoose = require("mongoose");
@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [ true, "El nombre es obligatorio" ],
-        unique: true, // no pueden haber dos productos con el mismo nombre
+        unique: true, // no pueden haber dos productos con el mismo nombre y sirve para crear un indice unico
         trim: true, //Eliminar espacios al inicio y al final
     },
 
@@ -31,39 +31,39 @@ const productSchema = new mongoose.Schema({
      //Precio de unidades monetarias
      //No puede ser negativo
     price: {
-        type: Number,
-        required: [ true, "El precio es requerido"],
+        type: Number, // NO tiene una cantidad especifica de numeros 
+        required: [ true, "El precio es obligatorio"],
         min: [0, "El precio no puede ser negativo"],
     },
 
      //cantidad de stock
      //No puede ser negativo
     stock: {
-        type: Number,
-        required: [ true, "El stock es requerido"],
+        type: Number, // NO tiene una cantidad especifica de numeros 
+        required: [ true, "El stock es obligatorio"],
         min: [0, "El stock no puede ser negativo"],
     },
 
     //Categoria padre esta subcategoria pertenece a una categoria
-    // relacion 1 - muchos una categoria puede tener muchas subcategorias
-    //un producto pertenece a una subcategoria pero una subcategoria puede tener muchos productos relacion 1 a muchos
+    // Relacion 1 - muchos una categoria puede tener muchas subcategorias
+    //Un producto pertenece a una subcategoria pero una subcategoria puede tener muchos productos relacion 1 a muchos
 
     category: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Es para referenciar documentos de otra coleccion y es para consultar otra
         ref: "Category", //Puede ser poblado con .populate("category")
         required: [true, "La categoria es requerida"],
     },
 
     subcategory: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Es para referenciar documentos de otra coleccion y es para consultar otra 
         ref: "Subcategory", //Puede ser poblado con .populate("subcategory")
         required: [true, "La subcategoria es requerida"],
     },
 
-    //quien creo el producto
-    // referencia de User no requerida
+    //Quien creo el producto
+    //Referencia de User no requerida
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Es para referenciar documentos de otra coleccion y es para consultar otra
         ref: "User", //Puede ser poblado para mostrar los usuarios
     },
 
@@ -78,22 +78,22 @@ const productSchema = new mongoose.Schema({
         default: true,
     }
 }, {
-    timestamps: true, // agrega createdAt y updatedAt automaticamente
+    timestamps: true, // Agrega createdAt y updatedAt automaticamente
     versionKey: false, // No  incluir campos __v
 });
 
 /**
  * MIDDLEWARE PRE-SAVE
- * limpia indices duplicados
+ * Limpia indices duplicados
  * Mongodb a veces crea multiples indices con el mismo nombre
- * esto causa conflictos al intentar dropIndex o recrear indices
- * este middleware limpia los indices problematicos
+ * Esto causa conflictos al intentar dropIndex o recrear indices
+ * Este middleware limpia los indices problematicos
  * Proceso
  * 1 obtiene una lista de todos los indices de la coleccion
  * 2 busca si existe un indice con el nombre name_1 (antiguo o duplicado)
- * si existe lo elimina antes de nuevas operaciones
- * ignora errores si el indice no existe
- * continua con el guardado normal
+ * Si existe lo elimina antes de nuevas operaciones
+ * Ignora errores si el indice no existe
+ * Continua con el guardado normal
  * */
 
 productSchema.post("save", async function(error, doc, next)
@@ -106,9 +106,8 @@ productSchema.post("save", async function(error, doc, next)
         next(error);
 });
 
-    /** indice unico
-    Mongo rechazara cualquier intento de insertar o actualizar un documento con un valor de name que ya exista
-    aumenta la velocidad de las busquedas
+    /** Indice unico
+    Mongo rechazara cualquier intento de insertar o actualizar un documento con un valor de name que ya exista aumenta la velocidad de las busquedas
     **/
 
     // Exportar el modelo
