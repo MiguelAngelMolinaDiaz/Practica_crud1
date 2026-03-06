@@ -7,9 +7,9 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../Controllers/authControllers');
-const { verifySingUp } = require('../middlewares');
-const {verifyToken} = require('../middleware/authJwt');
-const { checkRole } = require('../middleware/role');
+const verifySingUp = require('../middleswares/verifySignUp');
+const {verifyToken} = require('../middlewares/authJwt');
+const { checkRole } = require('../middlewares/role');
 
 // Rutas de autenticación
 // Requiere email - usuario y password
@@ -17,8 +17,8 @@ router.post("/signin", authController.signin);
 router.post("/signup",
     verifyToken,
     checkRole('admin'),
-    verifySingUp.checkDuplicateUsernameOrEmail,
-    verifySingUp.checkRolesExisted,
+    verifySignUp.checkDuplicateUsernameOrEmail,
+    verifySignUp.checkRolesExisted,
     authController.signup
 );
 module.exports = router;
