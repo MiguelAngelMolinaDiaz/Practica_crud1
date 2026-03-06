@@ -30,6 +30,7 @@ const checkRole = (...allowedRoles) => {
     return (req, res, next) => {
         //Validar que el usuario fue autenticado y veryfyToken ejecutado
         //req,userRole es establecido por veryfyToken middleware
+
         if(!req.userRole) {
             return res.status(401).json({
                 success: false,
@@ -37,7 +38,8 @@ const checkRole = (...allowedRoles) => {
             });
         }
 
-        // Verificar si el roldeñ usuario esta en la lista de  roles permitidos
+        // Verificar si el rol de usuario esta en la lista de  roles permitidos
+
         if (!allowedRoles.includes(req.userRole)) {
             return res.status(403).json({
                 success: false,
@@ -61,16 +63,18 @@ const isAdmin = (req, res, next) => {
 };
 
 // Verifica si el usuario es auxiliar
+
 const isAuxiliar = (req, res, next) => {
     return checkRole('auxiliar')(req, res, next);
 };
 
 // Verifica si el usuario es coordinador
+
 const isCoordinador = (req, res, next) => {
     return checkRole('coordinador')(req, res, next);
 };
 
-// MOdulos a exportar
+// Modulos a exportar
 module.exports = {
     checkRole,
     isAdmin,

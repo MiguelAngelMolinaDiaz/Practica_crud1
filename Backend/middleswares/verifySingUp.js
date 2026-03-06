@@ -41,6 +41,7 @@ const User = require("../models/User");
 const checkDuplicateUsernameOrEmail = async (req, res, next) => {
     try {
         // Validar que ambos estan presentes
+
         if (!req.body.username || !req.body.email) {
             return res.status(400).json({ 
                 message: "Username y email son requeridos" 
@@ -48,6 +49,7 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
         }
 
         // Buscar usuario existente con igual username o email
+
         const user = await User.findOne({
             $or: [
                 { username: req.body.username },
@@ -56,6 +58,7 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
         }) .exec();
 
         // SI encuentra un usuario retornar error
+
         if (user) {
             return res.status(400).json({
                 success: false,
@@ -63,7 +66,8 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
             });
         }
 
-        // NO hay duplicados
+        // NO hay duplicados - continuar
+
         next();
     } catch (err) {
         console.error("[verifySingUp] Error en checkDuplicateUsernameOrEmail:", err);
@@ -97,17 +101,21 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
 
 const checkRolesExisted = (req, res, next) => {
     //Lista blanca de roles validos en el sitema
+
     const validRoles = ["admin", "coordinador", "auxiliar"];
 
     // Si roles esta presente en el request
     if (req.body.role) {
-        // Convertir a array si es un string(soporta ambos formatos)
-        const rolesToCheck = Array.isArray(req.body.role) ? req.body.role : [req.body.role];
+        // Guardar los roles en un array soporte un solo rol o multiples en el caso de que un usuario tenga varios roles asignados
+
+        const roles = Array.isArray(req.body.role) ? req.body.role : [req.body.role];
 
         // Filtrar roles que no estan en la lista valida
-        const invalidRoles = rolesFilter(role => !validRoles.includes(role));
+
+        const invalidRoles = roles.filter(role => !validRoles.includes(role));
 
         // Si hay roles invalidos rechazar 
+
         if (invalidRoles.length > 0) {
             return res.status(400).json({
                 success: false,
@@ -125,6 +133,7 @@ const checkRolesExisted = (req, res, next) => {
  * Uso de rutas:
  * router.post("/singup....)
  */
+
 module.exports = {
     checkDuplicateUsernameOrEmail,
     checkRolesExisted

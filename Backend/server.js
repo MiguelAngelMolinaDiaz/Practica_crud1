@@ -26,12 +26,12 @@ if (!process.env.JWT_SECRET) {
     process.exit(1); // Salir del proceso con error
 
     // Importar todas las rutas
-    const authRoutes = require('./routes/auth');
-    const userRoutes = require('./routes/usersRoutes');
-    const postRoutes = require('./routes/productRoutes');
-    const categoryRoutes = require('./routes/categoryRoutes');
-    const subcategoryRoutes = require('./routes/subcategoryRoutes');
-    const statisticsRoutes = require('./routes/statisticsRoutes');
+    const authRoutes = require('./Routes/auth');
+    const userRoutes = require('./Routes/usersRoutes');
+    const postRoutes = require('./Routes/productRoutes');
+    const categoryRoutes = require('./Routes/categoryRoutes');
+    const subcategoryRoutes = require('./Routes/subcategoryRoutes');
+    const statisticsRoutes = require('./Routes/statisticsRoutes');
     
 
     // Iniciar express

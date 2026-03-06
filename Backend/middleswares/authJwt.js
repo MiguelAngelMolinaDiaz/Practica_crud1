@@ -48,20 +48,25 @@ const config = require("../config/auth.config.js");
 const verifyToken = (req, res, next) => {
     try {
         // Soportar dos formatos authorization: bearer o access-token
+
         let token = null;
 
         // Formmato Authorization
         if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+
+
             // Extraer token quitando el bearer
             token = req.headers.authorization.substring(7);
         }
 
         // Formato access-token
+
         else if (req.headers["x-access-token"]) {
             token = req.headers["x-access-token"];
         }
 
         // Si no encontramos token  rechza la solicitud 
+
         if (!token) {
                 return res.status(403).json({
                 success: false,
@@ -73,12 +78,14 @@ const verifyToken = (req, res, next) => {
         const decoded = jwt.verify(token, config.secret);
 
         // Adjuntar informacion del usuario a request para que otros middlewares y rutas puedan  acceder a ella
+
         req.userId = decoded.id; // id de mondgoDB
         req.userRole = decoded.role; //Rol de usuario
         req.userEmail = decoded.email; // Email del usuario
 
         // Token es valudo continuar  siguieente middleware o ruta
         next();
+
     }  catch (error) {
         // No token invalido o expirado
 
@@ -104,5 +111,5 @@ if (typeof verifyToken !== "function") {
 
 // Exportar el middleware
 module.exports = {
-    auth: verifyToken,
+    verifyToken: verifyToken,
 };

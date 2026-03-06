@@ -30,19 +30,23 @@ router.use((req, res, next) => {
 
 // Rutas de usuario
 
-router.post("/", verifyToken, 
+router.post("/", 
+    verifyToken, 
     checkRole('admin, coordinador'), 
     userController.createUser);
 
-router.get("/", verifyToken, 
+router.get("/", 
+    verifyToken, 
     checkRole('admin, coordinador, auxiliar'), 
     userController.getAllUsers);
 
-router.put("/", verifyToken, 
+router.put("/", 
+    verifyToken, 
     checkRole('admin, coordinador, auxiliar'), 
     userController.updateUser);
 
-router.delete("/", verifyToken, 
+router.delete("/", 
+    verifyToken, 
     checkRole('admin'), 
     userController.deleteUser);
 

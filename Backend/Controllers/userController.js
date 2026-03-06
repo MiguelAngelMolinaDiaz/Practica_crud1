@@ -7,8 +7,8 @@
  * Las contraseñas se devuelven en respuestas
  * Los auxiliares no pueden ver y actualizar otros usuarios
  * Los coordinadores no pueden ver los administradores
- * activar y desactivar usuarios
- * eliminar permanentemente un usuario solo admin
+ * Activar y desactivar usuarios
+ * Eliminar permanentemente un usuario solo admin
  * 
  * Operaciones
  * getAllUsers: Listar usuarios con filtro por rol
@@ -19,7 +19,7 @@
  */
 
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 /**
  * Obtener lista de usuarios 
@@ -47,10 +47,12 @@ exports.getAllUsers = async (req, res) => {
             // Los admin y coordinadores ven todos los usuarios
             users = await User.find(activeFilter).select('-password');
         }
+        
         res.status(200).json({ 
             success: true,
             data: users
         });
+
     } catch (error) { 
         console.error('[CONTROLLER] Error en getAllUsers:', error.message);
         res.status(500).json({
@@ -74,7 +76,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
     try {
         // Por defecto solo mostrar usuarios activos
-        const user = await user.findById(req.params.id).select('-password');
+        const user = await User.findById(req.params.id).select('-password');
 
         if (!user) {
             return res.status(404).json({
@@ -197,6 +199,7 @@ exports.updateUser = async (req, res) => {
         }
 
         // Actualizar usuario
+
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -207,6 +210,7 @@ exports.updateUser = async (req, res) => {
         if (!updatedUser) {
             
             // Usuario no encontrado
+            
             return res.status(404).json({
                 success: false,
                 message: 'Usuario no encontrado'

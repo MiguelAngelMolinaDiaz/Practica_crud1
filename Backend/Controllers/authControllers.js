@@ -50,14 +50,14 @@ exports.signup = async (req, res) => {
             };
 
             res.status(201).json({
-                sucess: true,
+                success: true,
                 message: 'Usuario registrado exitosamente',
                 token: token,
                 user: userResponse
             });
     } catch (error){
         return res.status(500).json({
-            sucess: false,
+            success: false,
             message: 'Error en el registro del usuario',
             error: error.message
             });
@@ -79,7 +79,7 @@ exports.signin = async (req, res) => {
         //valida que se envie el email o username
         if (!req.body.email && !req.body.username){
             return res.status(400).json({
-                sucess: false,
+                success: false,
                 message: 'email o username requerido'
             });
         }
@@ -87,8 +87,8 @@ exports.signin = async (req, res) => {
         //validar que se envie la contraseña
         if (!req.body.password){
             return res.status(400).json({
-                sucess: false,
-                message: 'pasword requerido'
+                success: false,
+                message: 'password requerido'
             });
         }
 
@@ -100,10 +100,10 @@ exports.signin = async (req, res) => {
             ]
         }).select('+password'); // incluye password field
     
-        //si no enxiste el uduario con este email o username
+        //si no existe el usuario con este email o username
         if (!user){
             return res.status(404).json({
-                sucess: false,
+                success: false,
                 message: 'Usuario no encontrado'
             });
         }
@@ -111,7 +111,7 @@ exports.signin = async (req, res) => {
         //verificar que el usuario tenga contraseña
         if (!user.password){
             return res.status(500).json({
-                sucess: false,
+                success: false,
                 message: 'Error interno: usuario sin contraseña'
             });
         }
@@ -122,7 +122,7 @@ exports.signin = async (req, res) => {
 
         if(!passwordIsValid){
             return res.status(401).json({
-                sucess: false,
+                success: false,
                 message: 'Contraseña incorrecta'
             });
         }
@@ -138,7 +138,8 @@ exports.signin = async (req, res) => {
             { expiresIn: config.jwtExpiration }
         );
 
-        //preparar respuesta sin mostrar la contraseña
+        //prepara respuesta sin mostrar la contraseña
+
         const userResponse = {
             id: user._id,
             username: user.username,
@@ -147,14 +148,15 @@ exports.signin = async (req, res) => {
         };
 
         res.status(200).json({
-            sucess: true,
+            success: true,
             message: 'Inicio de sesión exitoso',
             token: token,
             user: userResponse
         });
+        
     }  catch (error){
         return res.status(500).json({
-            sucess: false,
+            success: false,
             message: 'Error al iniciar sesión',
             error: error.message
         });

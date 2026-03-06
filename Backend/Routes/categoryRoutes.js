@@ -22,9 +22,9 @@ checkRole(['admin', 'coordinador']),
 categoryController.createCategory
 );
 
-router.get("/", categoryController.getAllCategories);
+router.get("/", verifyToken, categoryController.getAllCategories);
 
-router.get("/:id", categoryController.getCategoryById);
+router.get("/:id", verifyToken, categoryController.getCategoryById);
 
 router.put("/:id", verifyToken, 
 checkRole(['admin', 'coordinador']), 
