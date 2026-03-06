@@ -1,9 +1,11 @@
 /**
- * Modulo de conexion a la base de datos MongoDB 
- * Este archivo maneja la conexion de la base de datos MongoDB utilizando Mongoose
- * Establece la conexion con la base de datos
- * Configura las opciones de conexion
- * Maneja los errores de conexion
+ * Modulo de conexion a la base de datos MongoDB
+ * 
+ * Este archivo maneja la conexion de la DB mongodb
+ * utilizando Mongoose
+ * establece la conexion a la base de datos
+ * configura las opciones de conexion
+ * maneja los errores de conexion
  * Exporta la funcion connectDB para usarla en server.js
  */
 
@@ -16,10 +18,10 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        console.log("ok MongoDB conectado");
+        console.log('Ok, MongoDB conectado');
     } catch (error) {
-        console.error(" X Error de conexion a MongoDB:", error);
-        process.exit(1); // Salir del proceso con error
+        console.error('X Error de conexion a MongoDB:', error.message);
+        process.exit(1);
     }
 };
 module.exports = connectDB;

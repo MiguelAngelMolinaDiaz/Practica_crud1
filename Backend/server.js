@@ -9,14 +9,14 @@ const express = require('express');
 const moongose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
-const config = require('./config');
+const config = require('config');
 
 /**
  * Vlidaciones iniciales
  * Verifica que las variables de entorno requeridas esten definidas
  */
 
-if (!process.env.DB_URI) {
+if (!process.env.MONGODB_URI) {
     console.error(" X Error: MONGO_URI no está definida");
     process.exit(1); // Salir del proceso con error
 }
@@ -24,9 +24,10 @@ if (!process.env.DB_URI) {
 if (!process.env.JWT_SECRET) {
     console.error(" X Error: JWT_SECRET no está definida");
     process.exit(1); // Salir del proceso con error
+}
 
-    // Importar todas las rutas
-    const authRoutes = require('./Routes/auth');
+ // Importar todas las rutas
+    const authRoutes = require('./Routes/authRoutes');
     const userRoutes = require('./Routes/usersRoutes');
     const postRoutes = require('./Routes/productRoutes');
     const categoryRoutes = require('./Routes/categoryRoutes');
@@ -42,18 +43,18 @@ if (!process.env.JWT_SECRET) {
         origin: 'http://localhost:3001',
         credentials: true
     }));
-}
 
 // Morgan registra todas las solicitudes http en consola
 app.use(morgan('dev'));
 
-// Express jSON parsea bodies en formato JSON
+// Express JSON parsea bodies en formato JSON
 app.use(express.json());
 
 // Express URL encoded soporta datos form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
 // Conexion a MongoDB
+
 moongose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB conectado"))
     .catch((error) => {
