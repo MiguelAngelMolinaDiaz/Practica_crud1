@@ -1,14 +1,13 @@
 /**
- * Rutas de estadísticas
- * Define el endopoint para obtener las estadísticas generales del sistema.
+ * Rutas de las estadisticas
+ * Define el endpoint para obtener las estadisticas generales del sistema
  */
 
 const express = require('express');
 const router = express.Router();
-const {getStatistics} = require('../Controllers/statisticsController');
+const { getStatistics } = require('../controllers/statisticsController');
 
-// Get/api/statistics obtiene las estadísticas del sistema
-
+// Get /api/statistics obtiene las estadisticas del sistema
 router.get('/', getStatistics);
 
 module.exports = router;
