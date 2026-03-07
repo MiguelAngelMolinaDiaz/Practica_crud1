@@ -11,12 +11,12 @@ const morgan = require('morgan');
 
 // Importar configuraciones y rutas
 const config = require('./config');
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
-const productRoutes = require('./routes/productRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const subcategoryRoutes = require('./routes/subcategoryRoutes');
-const statisticsRoutes = require('./routes/statisticsRoutes');
+const authRoutes = require('./Routes/authRoutes');
+const userRoutes = require('./Routes/userRoutes');
+const productRoutes = require('./Routes/productRoutes');
+const categoryRoutes = require('./Routes/categoryRoutes');
+const subcategoryRoutes = require('./Routes/subcategoryRoutes');
+const statisticsRoutes = require('./Routes/statisticsRouter');
 
 // Validaciones iniciales
 if (!process.env.MONGODB_URI) {
