@@ -268,7 +268,7 @@ exports.deleteSubcategory = async (req, res) => {
         }
     } catch (error) {
         console.error('Error al desactivar la subcategoria:', error);
-        res.status(500),json({
+        res.status(500).json({
             success: false,
             message:'Error al desactivar la subcategoria',
             error: error.message

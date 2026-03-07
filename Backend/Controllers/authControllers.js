@@ -8,128 +8,129 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 
-/** SINGUP : crear nuevo usuario
-* POST /api/auth/signup
-*Body {username, email, password, role}
-*crea un nuevo usuario en la base de datos
-*emcripta la contraseña antes de guardar con bcrypt
-*genera un token JWT 
-*retorna el usuario sin mostrar la contraseña
-*/
+/**
+ * SINGUP: crear nuevo usuario
+ * POST /api/auth/signup
+ * Body { username, email, password, role}
+ * Crea usuario en la base de datos
+ * encripta contraseña antes de guardar con bcrypt
+ * genera token JWT
+ * Retorna usuario sin monstrar la contraseña
+ */
 
 exports.signup = async (req, res) => {
-    try{
-        ///Crear nuevo usuario
+    try {
+        // Crear nuevo usuario
         const user = new User({
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
-            role: req.body.role || 'auxiliar' // rol por defecto
+            role: req.body.role || 'auxiliar' // Por defecto el rol es auxiliar
         });
-        
-        //Guardar usuario en la base de datos
-        //la contraaseña se encripta automatizamente en el middleware del modelo
-        const savedUser = await user.save();
 
-        //Generar token JWT que expira en 24 horas
+        // Guardar en base de datos
+        // La contraseña se encripta automaticamente en el middllware del modelo
+        const saveUser = await user.save();
+
+        // Generar token jwt que expira  en 24 horas
         const token = jwt.sign(
-            { 
-                id: savedUser._id,
-                role: savedUser.role,
-                email: savedUser.email
+            {
+                id: saveUser._id,
+                role: saveUser.role,
+                email: saveUser.email
             },
             config.secret,
             { expiresIn: config.jwtExpiration }
         );
-            //preparando respuesta sin la contraseña
-            const userResponse = {
-                id: savedUser._id,
-                username: savedUser.username,
-                email: savedUser.email,
-                role: savedUser.role,
-            };
 
-            res.status(201).json({
-                success: true,
-                message: 'Usuario registrado exitosamente',
-                token: token,
-                user: userResponse
-            });
-    } catch (error){
+        // Preparando respuesta sin mostrar la contraseña
+        const UserResponse = {
+            id: saveUser._id,
+            username: saveUser.username,
+            email: saveUser.email,
+            role: saveUser.role,
+        };
+
+        res.status(200).json({
+            success: true,
+            message: 'Usuario reguistrado correctamente',
+            token: token,
+            user: UserResponse
+        });
+    } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Error en el registro del usuario',
+            message: 'Error al registrar usuario',
             error: error.message
-            });
+        });
     }
 };
 
-/** 
- * SIGNIN : iniciar sesion
+/**
+ * SIGNIN: iniciar sesion
  * POST /api/auth/signin
- * Body {email o usuario, password}
- * busca el usuario por email o username
- * valida la contraseña con bcrypt
- * si es correcto el token JWT 
- * token se usa para autenticar futuras solicitudes
+ * body { email o usuario, password}
+ * busca el usuario por el email o username
+ * valida la contraseña con bcrypt 
+ * si es correcto el token JWt
+ * Token  se usa  para autneticar futuras solicitudes
  */
 
 exports.signin = async (req, res) => {
-    try{
-        //valida que se envie el email o username
-        if (!req.body.email && !req.body.username){
+    try {
+        // Validar que se envie el email o username
+        if (!req.body.email && !req.body.username) {
             return res.status(400).json({
                 success: false,
                 message: 'email o username requerido'
             });
         }
 
-        //validar que se envie la contraseña
-        if (!req.body.password){
+        // Validar que se envie la contraseña
+        if (!req.body.password) {
             return res.status(400).json({
                 success: false,
                 message: 'password requerido'
             });
         }
 
-        //buscar el usuario por email o username
+        // Buscar usuario por email o username
         const user = await User.findOne({
             $or: [
                 { username: req.body.username },
                 { email: req.body.email }
-            ]
-        }).select('+password'); // incluye password field
-    
-        //si no existe el usuario con este email o username
-        if (!user){
+            ] // $or guarda datos directamente en una array
+        }).select('+password'); // include password field
+
+        // si no existe el usuario con este email o username
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: 'Usuario no encontrado'
             });
         }
 
-        //verificar que el usuario tenga contraseña
-        if (!user.password){
+        // Verificar que el usuario tenga contraseña
+        if (!user.password) {
             return res.status(500).json({
                 success: false,
                 message: 'Error interno: usuario sin contraseña'
             });
         }
 
-        //comparar la contraseña enviada con el hash almacenado
-        const passwordIsValid = await bcrypt.compare
-        (req.body.password, user.password);
+        // Comparar contraseña enviada con el hash(contraseña encriptada) almacenado
+        const isPasswordValid= await bcrypt.compare(req.body.password, user.password);
 
-        if(!passwordIsValid){
+        if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
                 message: 'Contraseña incorrecta'
             });
         }
 
-        //generar token JWT 24 horas
+        // Generar token JWT 24 horas
         const token = jwt.sign(
-            { 
+            {
                 id: user._id,
                 role: user.role,
                 email: user.email
@@ -138,26 +139,24 @@ exports.signin = async (req, res) => {
             { expiresIn: config.jwtExpiration }
         );
 
-        //prepara respuesta sin mostrar la contraseña
-
-        const userResponse = {
+        // Prepara respuesta sin mostrar la contraseña
+        const UserResponse = {
             id: user._id,
             username: user.username,
             email: user.email,
-            role: user.role,
+            role: user.role
         };
 
         res.status(200).json({
             success: true,
-            message: 'Inicio de sesión exitoso',
+            message: 'Inicio de sesion exitoso',
             token: token,
-            user: userResponse
+            user: UserResponse
         });
-        
-    }  catch (error){
+    } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Error al iniciar sesión',
+            message: 'Error al iniciar sesion',
             error: error.message
         });
     }

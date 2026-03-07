@@ -1,7 +1,4 @@
-//Conexion a la base de datos
-
+// Conexion con la DB
 module.exports = {
-    url:process.env.MONGODB_URI || 
-    "mongodb://localhost:27017/mongodb-crud"
+  url:process.env.MONGODB_URI || "mongodb://localhost:27017/crud-mongo"
 };
-
