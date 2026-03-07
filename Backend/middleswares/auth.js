@@ -10,8 +10,8 @@ const User = require('../models/User');
 /**
  * Autenticar usuario
  * Valida el token Bearer en el header Authorization
- * Si es valido carga el usuario en req.user
- * Si no es valido o no existe retorna 401 Unauthorized
+ * si es valido carga el usuario en req.user
+ * si no es valido o no existe retorna 401 Unauthorized
  */
 
 exports.authenticate = async (req, res, next) => {
@@ -50,9 +50,7 @@ exports.authenticate = async (req, res, next) => {
 
         next();
     } catch (error) {
-
-        // Token invalido o error en la verificacion
-
+        // token invalido o error en la verificacion
         let message = 'Token invalido o expirado';
         if (error.name === 'TokenExpiredError') {
             message = 'Token expirado, Por favor inicia sesion de nuevamente';
@@ -72,16 +70,14 @@ exports.authenticate = async (req, res, next) => {
  * Middleware para autorizar por rol
  * Verifica que el usuario tiene uno de los roles requeridos se usa despues del middleware authenticate
  * @param {Array} roles - array de roles permitidos
- * @return {Function} - Middleware function
+ * @return {Funtion} Middleware function
  * 
- * Uso: app.delete('/api/products/:id, authenticate,
- * Authorize (['admin']))
+ * uso: app.delete('/api/products/:id, authenticate,
+ * authorize (['admin]))
  */
 exports.authorize = (roles) => {
     return (req, res, next) => {
-
         // Verificar si el rol del usuario esta en la lista de roles permitidos
-
         if (!roles.includes(req.user.role)) {
             return res.status(403).json({
                 success: false,
@@ -91,7 +87,6 @@ exports.authorize = (roles) => {
                 details: `Tu rol es "${req.user.role}" pero se requiere uno de: ${roles.join(',')}`
             });
         }
-        
         // Si el usuario tiene permiso continuar
         next();
     };
