@@ -28,7 +28,7 @@ if (!process.env.JWT_SECRET) {
 
  // Importar todas las rutas
     const authRoutes = require('./Routes/authRoutes');
-    const userRoutes = require('./Routes/usersRoutes');
+    const userRoutes = require('./Routes/userRoutes');
     const postRoutes = require('./Routes/productRoutes');
     const categoryRoutes = require('./Routes/categoryRoutes');
     const subcategoryRoutes = require('./Routes/subcategoryRoutes');
@@ -68,16 +68,16 @@ moongose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);
 
 // Rutas de usuarios CRUD
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 
 // Rutas de productos CRUD
-app.use('/api/products', postRoutes);
+app.use('/api/product', postRoutes);
 
 // Rutas de categorias CRUD
-app.use('/api/categories', categoryRoutes);
+app.use('/api/category', categoryRoutes);
 
 // Rutas de subcategorias CRUD
-app.use('/api/subcategories', subcategoryRoutes);
+app.use('/api/subcategory', subcategoryRoutes);
 
 // Rutas de estadisticas
 app.use('/api/statistics', statisticsRoutes);

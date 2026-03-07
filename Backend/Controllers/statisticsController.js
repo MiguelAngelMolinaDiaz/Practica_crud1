@@ -33,13 +33,13 @@ const getStatistics = async (req, res) => {
         // Retornar las estadisticas
         res.status(200).json({
             success: true,
-            statistics:
+            statistics: {
                 totalUsers,
                 totalProducts,
                 totalCategories,
                 totalSubcategories
-            
-        }); 
+            }
+        });
     } catch (error) {
         console.error("Error al obtener estadisticas", error);
         res.status(500).json({

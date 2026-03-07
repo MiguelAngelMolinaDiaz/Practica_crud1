@@ -7,9 +7,9 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../Controllers/authControllers');
-const verifySingUp = require('../middleswares/verifySignUp');
-const {verifyToken} = require('../middlewares/authJwt');
-const { checkRole } = require('../middlewares/role');
+const verifySignUp = require('../middleswares/verifySignUp');
+const { verifyToken } = require('../middleswares/authJwt');
+const { checkRole } = require('../middleswares/role');
 
 // Rutas de autenticación
 // Requiere email - usuario y password
