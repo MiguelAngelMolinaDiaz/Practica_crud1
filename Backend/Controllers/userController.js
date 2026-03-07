@@ -7,8 +7,8 @@
  * Las contraseñas se devuelven en respuestas
  * Los auxiliares no pueden ver y actualizar otros usuarios
  * Los coordinadores no pueden ver los administradores
- * Activar y desactivar usuarios
- * Eliminar permanentemente un usuario solo admin
+ * activar y desactivar usuarios
+ * eliminar permanentemente un usuario solo admin
  * 
  * Operaciones
  * getAllUsers: Listar usuarios con filtro por rol
@@ -47,12 +47,10 @@ exports.getAllUsers = async (req, res) => {
             // Los admin y coordinadores ven todos los usuarios
             users = await User.find(activeFilter).select('-password');
         }
-        
         res.status(200).json({ 
             success: true,
             data: users
         });
-
     } catch (error) { 
         console.error('[CONTROLLER] Error en getAllUsers:', error.message);
         res.status(500).json({
@@ -108,7 +106,7 @@ exports.getUserById = async (req, res) => {
         });
 
     } catch (error) { 
-        console.error('Error en getUserById:', error.message);
+        console.error('Error en getUserById:', error);
         res.status(500).json({
             success: false,
             message: 'Error al encontrar al ususario especificado',
@@ -117,65 +115,62 @@ exports.getUserById = async (req, res) => {
     }
 };
 
-
 /**
  * CREATE Crear un nuevo usuario
- * POST api/users
+ * POST /api/users
  * Auth Bearer token requerido
- * Roles permitidos: admin, coordinador ( Con restricciones)
- * Validaciones 
- *  201 Usuario creado
- *  400 Datos de entrada inválidos
- *  403 Sin permiso para crear usuarios
- *  500 Error del servidor
+ * Role admin y coordinador (con restricciones)
+ * Validaciones
+ * 201 Usuario creado
+ * 400 Validacion fallida
+ * 500 Error de servidor
  */
 
 exports.createUser = async (req, res) => {
     try {
-        const { userName, email, password, role } = req.body;
-
-        // Crear usuario nuevo
-        const newUser = new User({
-            username: userName,
+        const { username, email, password, role } = req.body;
+        
+        // Crear suario nuevo
+        const user = new User({
+            username,
             email,
             password,
-            role,
+            role
         });
 
-    // Guardar en DB
+        // Guardar en DB
+        const savedUser = await user.save();
 
-    const savedUser = await newUser.save();
-
-    res.status(201).json({
-        success: true,
-        message: 'Usuario creado exitosamente',
-        user: {
-            id: savedUser._id,
-            username: savedUser.username,
-            email: savedUser.email,
-            role: savedUser.role,
-        }
-    });
-  } catch (error) {
-    console.error("Error en createUser:", error);
-    res.status(500).json({
-        success: false,
-        message: "Error al crear el usuario",
-        error: error.message
-    });
-  } 
+        res.status(201).json({
+            success: true,
+            message: 'Usuario creado',
+            user: {
+                id: savedUser._id,
+                username: savedUser.username,
+                email: savedUser.email,
+                role: savedUser.role
+            }
+        });
+    } catch (error) {
+        console.error('Error en createUser', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al crear el usuario',
+            error: error.message
+        });
+    }
 };
 
 /**
- * UPTADE Actualizar un usuario existente
- * PUT api/users/:id
+ * UPDATE actualizar un usuario existente
+ * PUT /api/users/:id
  * Auth Bearer token requerido
- * Validaciones
- * auxiliares solo pueden actualizar su propio perfil
- * auxiliares no pueden cambiar su rol
- * admin, coodinador pueden actualizar otros usuarios
+ * Validaciones:
+ * Auxiliar solo puede actualizar su propio perfil
+ * Auxiliar no puede cambiar su rol
+ * Admin, Coordinador pueden actualizar otros usuarios
  * 200 Usuario actualizado
- * 403 Sin permiso para actualizar el usuario
+ * 403 Sin permiso para actualizar
  * 404 Usuario no encontrado
  * 500 Error del servidor
  */
@@ -194,67 +189,58 @@ exports.updateUser = async (req, res) => {
         if (req.userRole === 'auxiliar' && req.body.role) {
             return res.status(403).json({
                 success: false,
-                message: 'No tienes permiso para cambiar tu rol'
+                message: 'No tienes permiso para cambiar de rol'
             });
         }
 
         // Actualizar usuario
-
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            {$set: req.body},
-            { new: true } // Retorna el documento actualizado
-        ) .select('-password'); // NO retornar contraseña
+            { $set: req.body },
+            { new: true } // Retorna documento actualizado
+        ).select('-password'); // No retorna constraseña
 
         if (!updatedUser) {
-            
-            // Usuario no encontrado
-            
             return res.status(404).json({
                 success: false,
                 message: 'Usuario no encontrado'
             });
-
-            // Usuario actualizado
-        
-        } else {
-            res.status(200).json({
-                success: true,
-                message: 'Usuario actualizado',
-                user: updatedUser
-            });
         }
 
-} catch (error) {
-    console.error("Error en updateUser:", error);
-    res.status(500).json({
-        success: false,
-        message: "Error al actualizar el usuario",
-    });
+        res.status(200).json({
+            success: true,
+            message: 'Usuario actualizado con exito',
+            user: updatedUser
+        });
 
-}
-
+    } catch (error) {
+        console.error('Error en updateUser', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al actualizar el usuario'
+        });
+    }
 };
 
 /**
- * DELETE Eliminar un usuario
- * delete api/users/:id
- * roles: admin
- * query params:
- * hardDelete=true para eliminar permanentemente
- * default soft delete desactivar
+ * DELETE eliminar usuario
+ * delete /api/users/:id
+ * Roles: admin
+ * Query params:
+ * hardDelete=true eliminar permanentemente
+ * Default soft delete desactivar
+ *
  * El admin solo puede desactivar otro admin
- * Retorna: 
- * 200 Usuario eliminado
- * 403 Sin permiso para eliminar el usuario
+ * Retorna
+ * 200 Usuario eliminado o desactivado
+ * 403 Sin permiso
  * 404 Usuario no encontrado
- * 500 Error del servidor
+ * 500 Error de servidor
  */
 
 exports.deleteUser = async (req, res) => {
     try {
-        const hardDelete = req.query.hardDelete === 'true';
+        const ishardDelete = req.query.hardDelete === 'true';
         const userToDelete = await User.findById(req.params.id);
 
         // Usuario no encontrado
@@ -262,38 +248,31 @@ exports.deleteUser = async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: 'Usuario no encontrado'
-            });
+            })
         }
 
-        // Restriccion: solo admin puede eliminar usuarios
-        if (req.userRole !== 'admin') {
-            return res.status(403).json({
-                success: false,
-                message: 'No tienes permiso para eliminar este usuario'
-            }); 
-        }
-
-        // Proteccion no permitir o desactivar otro admin
-        if (userToDelete.role === 'admin' && req.userId.toString() !== req.userId.toString()) {
+        // Proteccion: Admin no puede eliminar otro admin
+        // Solo el mismo admin puede eliminar otro admin
+        if (userToDelete.role === 'admin' && userToDelete._id.toString() !== req.userId.toString()) {
             return res.status(403).json({
                 success: false,
                 message: 'No tienes permiso para eliminar o desactivar administradores'
             });
         }
 
-        // Eliminar permanentemente
-        if (hardDelete) {
-            await User.findByIdAndDelete(req.params.id);
+        // Elimnar permanentemente o desactivar
+        if (ishardDelete) {
+            await User.findByIdAndDelete(userToDelete._id);
             res.status(200).json({
                 success: true,
                 message: 'Usuario eliminado permanentemente',
                 data: userToDelete
             });
-
-            // Soft delete: desactivar usuario
         } else {
+            // Desactivar usuario (soft delete)
             userToDelete.active = false;
             await userToDelete.save();
+
             res.status(200).json({
                 success: true,
                 message: 'Usuario desactivado',
@@ -301,11 +280,11 @@ exports.deleteUser = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error("Error en deleteUser:", error);
+        console.error('Error en deleteUser', error);
         res.status(500).json({
             success: false,
-            message: "Error al eliminar el usuario",
+            message: 'Error al desactivar usuario',
             error: error.message
         });
-    } 
+    }
 };
