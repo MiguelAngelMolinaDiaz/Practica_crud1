@@ -89,7 +89,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
   const newUser = { // Datos del usuario de prueba con timestamp para evitar duplicados
     username: `testuser${timestamp}`, // Username único gracias al timestamp
     email: `test${timestamp}@example.com`, // Email único gracias al timestamp
-    password: 'test123',  // Contraseña del usuario de prueba
+    password: 'test1234567',  // Contraseña del usuario de prueba (min 10)
     role: 'auxiliar'      // Rol menos privilegiado
   };
   res = await request('POST', '/users', newUser); // Petición POST /api/users con datos del nuevo usuario

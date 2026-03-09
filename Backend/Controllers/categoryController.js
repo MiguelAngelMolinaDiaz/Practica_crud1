@@ -24,17 +24,17 @@ exports.createCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
         // Validacion de los campos de entrada
-        if (!name || typeof name !== 'string' || name.trim()) {
+        if (!name || typeof name !== 'string' || !name.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'El modelo es obligatorio y debe ser texto valido'
+                message: 'El nombre es obligatorio y debe ser texto valido'
             });
         }
 
-        if (!description || typeof description !== 'string' || description.trim()) {
+        if (!description || typeof description !== 'string' || !description.trim()) {
             return res.status(400).json({
                 success: false,
-                message: 'La description es obligatorioa y debe ser texto valido'
+                message: 'La descripcion es obligatoria y debe ser texto valido'
             });
         }
 
