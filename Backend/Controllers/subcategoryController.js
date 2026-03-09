@@ -90,7 +90,7 @@ exports.getSubcategories = async (req, res) => {
             active: { $ne: false }
         };
 
-        const subcategories = await Subategory.find(activeFilter).populate('category', 'name');
+        const subcategories = await Subcategory.find(activeFilter).populate('category', 'name');
         res.status(200).json({
             success: true,
             data: subcategories
@@ -156,7 +156,7 @@ exports.updateSubcategory = async (req, res) => {
 
         // Verificar si cambia la categoria padre
         if (category) {
-            const parentCategory = await Category.findById(Category);
+            const parentCategory = await Category.findById(category);
             if (!parentCategory) {
                 return res.status(400).json({
                     success: false,
@@ -165,14 +165,22 @@ exports.updateSubcategory = async (req, res) => {
             }
         }
 
+        const updateData = {};
+        if (name !== undefined) updateData.name = name.trim();
+        if (description !== undefined) updateData.description = description.trim();
+        if (category !== undefined) updateData.category = category;
+
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No hay datos para actualizar'
+            });
+        }
+
         // Construir objeto de actualizacion solo en campos enviados
         const updateSubcategory = await Subcategory.findByIdAndUpdate(
             req.params.id,
             updateData,
-            { name: name ? name.trim() : undefined,
-                description: description ? description.trim() : undefined,
-                category
-            },
             { new: true, runValidators: true }
         );
 

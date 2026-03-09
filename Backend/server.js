@@ -8,6 +8,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+require('./models');
 
 // Importar configuraciones y rutas
 const config = require('./config');
