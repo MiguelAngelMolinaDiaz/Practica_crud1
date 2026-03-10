@@ -181,6 +181,10 @@ exports.updateSubcategory = async (req, res) => {
         const updateSubcategory = await Subcategory.findByIdAndUpdate(
             req.params.id,
             updateData,
+            { name: name ? name.trim() : undefined,
+                description: description ? description.trim() : undefined,
+                category
+            },
             { new: true, runValidators: true }
         );
 
