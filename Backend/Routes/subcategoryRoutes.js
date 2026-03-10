@@ -34,23 +34,6 @@ const validateSubcategory = [
         .withMessage('La categoria es obligatoria'),
 ]
 
-const validateSubcategoryUpdate = [
-    check('name')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('El nombre no puede estar vacio'),
-    check('description')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('La descripcion no puede estar vacia'),
-    check('category')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('La categoria no puede estar vacia'),
-]
 // Rutas CRUD
 
 router.post('/',
@@ -72,7 +55,7 @@ router.get('/:id',
 router.put('/:id',
     verifyToken,
     checkRole(['admin','coordinador']),
-    validateSubcategoryUpdate,
+    validateSubcategory,
     subcategoryController.updateSubcategory
 );
 
