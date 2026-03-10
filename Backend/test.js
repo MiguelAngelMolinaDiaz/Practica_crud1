@@ -148,7 +148,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
 
   // Actualizar categoría
   if (categoryId) { // Solo ejecuta si la categoría fue creada exitosamente
-    res = await request('PUT', `/categories/${categoryId}`, { name: 'Updated Category' }); // Petición PUT para cambiar el nombre
+    res = await request('PUT', `/categories/${categoryId}`, { name: `Updated Category ${timestamp}` }); // Petición PUT para cambiar el nombre
     log('PUT /categories/:id (actualizar)', res.ok && res.status === 200, `(Status: ${res.status})`); // Verifica 200 OK
   }
 
@@ -187,7 +187,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
 
   // Actualizar subcategoría
   if (subcategoryId) { // Solo ejecuta si la subcategoría fue creada exitosamente
-    res = await request('PUT', `/subcategories/${subcategoryId}`, { name: 'Updated Subcategory' }); // Petición PUT para cambiar nombre
+    res = await request('PUT', `/subcategories/${subcategoryId}`, { name: `Updated Subcategory ${timestamp}` }); // Petición PUT para cambiar nombre
     log('PUT /subcategories/:id (actualizar)', res.ok && res.status === 200, `(Status: ${res.status})`); // Verifica 200 OK
   }
 
