@@ -49,6 +49,44 @@ const validateProduct = [
         .withMessage('La categoria es obligatoria'),
 ]
 
+const validateProductUpdate = [
+    check('name')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('El nombre no puede estar vacio'),
+
+    check('description')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('La descripcion no puede estar vacia'),
+
+    check('price')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('El precio no puede estar vacio'),
+
+    check('stock')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('El stock no puede estar vacio'),
+
+    check('subcategory')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('La subcategoria no puede estar vacia'),
+
+    check('category')
+        .optional()
+        .not()
+        .isEmpty()
+        .withMessage('La categoria no puede estar vacia'),
+]
+
 // Rutas CRUD
 
 router.post('/',
