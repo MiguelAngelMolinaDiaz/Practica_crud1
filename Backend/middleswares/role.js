@@ -32,16 +32,9 @@
  */
 const checkRole = (...allowedRoles) => {
     return (req, res, next) => {
-        const normalizedRoles = allowedRoles
-            .flat()
-            .map((role) => String(role).trim().toLowerCase());
-        const currentRole = Array.isArray(req.userRole)
-            ? String(req.userRole[0] || '').trim().toLowerCase()
-            : String(req.userRole || '').trim().toLowerCase();
-
         // Validar que el usuario fue autenticado y verifyToken ejecutado
         // req.userRole es establecido pero verifyToken middleware
-        if (!currentRole) {
+        if (!req.userRole) {
             return res.status(401).json({
                 success: false,
                 message: 'Token invalido o expirado'
@@ -49,10 +42,10 @@ const checkRole = (...allowedRoles) => {
         }
 
         // Verificar si el rol del usuario esta en la lista de roles permitidos
-        if (!normalizedRoles.includes(currentRole)) {
+        if (!allowedRoles.includes(req.userRole)) {
             return res.status(403).json({
                 success: false,
-                message: `Permisos insuficientes. Se requiere: ${normalizedRoles.join(',')}`
+                message: `'Permisos insuficientes Se requiere: ${allowedRoles.join( 'o ')}`
             });
         }
         // Usuario tiene permiso continuar

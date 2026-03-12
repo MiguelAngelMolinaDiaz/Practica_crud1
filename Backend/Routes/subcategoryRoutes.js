@@ -12,7 +12,7 @@
 
 const express = require('express');
 const router = express.Router();
-const subcategoryController = require('../controllers/subcategoryController');
+const subcategoryController = require('../Controllers/subcategoryController');
 const { check } = require('express-validator');
 const { verifyToken } = require('../middleswares/authJwt');
 const { checkRole } = require('../middleswares/role');
@@ -33,12 +33,11 @@ const validateSubcategory = [
         .isEmpty()
         .withMessage('La categoria es obligatoria'),
 ]
-
 // Rutas CRUD
 
 router.post('/',
     verifyToken,
-    checkRole(['admin','coordinador', 'auxiliar']),
+    checkRole('admin','coordinador', 'auxiliar'),
     validateSubcategory,
     subcategoryController.createSubcategory
 );
@@ -54,14 +53,14 @@ router.get('/:id',
 
 router.put('/:id',
     verifyToken,
-    checkRole(['admin','coordinador']),
+    checkRole('admin','coordinador'),
     validateSubcategory,
     subcategoryController.updateSubcategory
 );
 
 router.delete('/:id',
     verifyToken,
-    checkRole(['admin']),
+    checkRole('admin'),
     subcategoryController.deleteSubcategory
 );
 

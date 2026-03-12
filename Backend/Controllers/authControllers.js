@@ -6,7 +6,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth.config');
+const config = require('../Config/auth.config');
 
 /**
  * SINGUP: crear nuevo usuario

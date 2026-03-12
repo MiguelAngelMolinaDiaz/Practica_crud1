@@ -47,9 +47,9 @@ exports.createProduct = async (req, res) => {
             });
         }
         // Validar que la subcategoria padre exista y pertenece a la categoria especificada
-        const subcategoryExist = await Subcategory.findOne({
-            _id: subcategory,
-            category: category
+        const subcategoryExist = await Subcategory.findById({
+                _id: subcategory,
+                category: category
         });
         if (!subcategoryExist) {
             return res.status(404).json({

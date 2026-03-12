@@ -10,7 +10,7 @@
 
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const userController = require('../Controllers/userController');
 const { verifyToken } = require('../middleswares/authJwt');
 const { checkRole } = require('../middleswares/role');
 
@@ -31,19 +31,19 @@ router.use((req, res, next) => {
 
 router.post('/',
     verifyToken,
-    checkRole(['admin', 'coordinador']),
+    checkRole('admin', 'coordinador'),
     userController.createUser
 );
 
 router.get('/',
     verifyToken,
-    checkRole(['admin', 'coordinador', 'auxiliar']),
+    checkRole('admin', 'coordinador', 'auxiliar'),
     userController.getAllUsers
 );
 
 router.get('/:id',
     verifyToken,
-    checkRole(['admin', 'coordinador', 'auxiliar']),
+    checkRole('admin', 'coordinador', 'auxiliar'),
     userController.getUserById
 );
 

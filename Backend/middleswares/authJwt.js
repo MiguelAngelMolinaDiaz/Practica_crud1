@@ -23,7 +23,7 @@
  * 3. Extrae payload {id, role, email}
  */
 const jwt = require('jsonwebtoken');
-const config = require('../config/auth.config');
+const config = require('../Config/auth.config');
 
 /**
  * Verificar token
@@ -100,5 +100,5 @@ if (typeof verifyTokenFn !== 'function') {
 }
 // Exportar el middleware
 module.exports = {
-    verifyToken: verifyTokenFn,
+    verifyToken: verifyTokenFn
 };

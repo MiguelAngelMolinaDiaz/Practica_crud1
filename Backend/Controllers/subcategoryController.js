@@ -156,7 +156,7 @@ exports.updateSubcategory = async (req, res) => {
 
         // Verificar si cambia la categoria padre
         if (category) {
-            const parentCategory = await Category.findById(category);
+            const parentCategory = await Category.findById(Category);
             if (!parentCategory) {
                 return res.status(400).json({
                     success: false,
@@ -165,12 +165,12 @@ exports.updateSubcategory = async (req, res) => {
             }
         }
 
+        // Construir objeto de actualizacion solo en campos enviados
         const updateData = {};
         if (name) updateData.name = name.trim();
         if (description) updateData.description = description.trim();
         if (category) updateData.category = category;
 
-        // Construir objeto de actualizacion solo en campos enviados
         const updateSubcategory = await Subcategory.findByIdAndUpdate(
             req.params.id,
             updateData,

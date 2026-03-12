@@ -59,7 +59,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
   // Login - Admin
   let res = await request('POST', '/auth/signin', { // Envía petición de login con credenciales de admin
     username: 'admin',      // Usuario admin creado con seedUsers.js
-    password: 'admin123'    // Contraseña del admin
+    password: 'admin12345'    // Contraseña del admin
   });
   log('Login admin', res.ok && res.status === 200, `(Status: ${res.status})`); // Verifica que el login respondió 200 OK
   if (res.ok) { // Si el login fue exitoso
@@ -89,7 +89,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
   const newUser = { // Datos del usuario de prueba con timestamp para evitar duplicados
     username: `testuser${timestamp}`, // Username único gracias al timestamp
     email: `test${timestamp}@example.com`, // Email único gracias al timestamp
-    password: 'test1234567',  // Contraseña del usuario de prueba (min 10)
+    password: 'test123456',  // Contraseña del usuario de prueba
     role: 'auxiliar'      // Rol menos privilegiado
   };
   res = await request('POST', '/users', newUser); // Petición POST /api/users con datos del nuevo usuario

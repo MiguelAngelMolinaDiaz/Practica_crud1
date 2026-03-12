@@ -12,14 +12,14 @@
 
 const express = require('express');
 const router = express.Router();
-const categoryController = require('../controllers/categoryController');
+const categoryController = require('../Controllers/categoryController');
 const { verifyToken } = require('../middleswares/authJwt');
 const { checkRole } = require('../middleswares/role');
 // Rutas CRUD
 
 router.post('/',
     verifyToken,
-    checkRole(['admin','coordinador', 'auxiliar']),
+    checkRole('admin','coordinador', 'auxiliar'),
     categoryController.createCategory
 );
 
@@ -34,13 +34,13 @@ router.get('/:id',
 
 router.put('/:id',
     verifyToken,
-    checkRole(['admin','coordinador']),
+    checkRole('admin','coordinador'),
     categoryController.updateCategory
 );
 
 router.delete('/:id',
     verifyToken,
-    checkRole(['admin']),
+    checkRole('admin'),
     categoryController.deleteCategory
 );
 

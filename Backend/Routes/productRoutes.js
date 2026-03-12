@@ -12,7 +12,7 @@
 
 const express = require('express');
 const router = express.Router();
-const productController = require('../controllers/productController');
+const productController = require('../Controllers/productController');
 const { check } = require('express-validator');
 const { verifyToken } = require('../middleswares/authJwt');
 const { checkRole } = require('../middleswares/role');
@@ -48,50 +48,11 @@ const validateProduct = [
         .isEmpty()
         .withMessage('La categoria es obligatoria'),
 ]
-
-const validateProductUpdate = [
-    check('name')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('El nombre no puede estar vacio'),
-
-    check('description')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('La descripcion no puede estar vacia'),
-
-    check('price')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('El precio no puede estar vacio'),
-
-    check('stock')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('El stock no puede estar vacio'),
-
-    check('subcategory')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('La subcategoria no puede estar vacia'),
-
-    check('category')
-        .optional()
-        .not()
-        .isEmpty()
-        .withMessage('La categoria no puede estar vacia'),
-]
-
 // Rutas CRUD
 
 router.post('/',
     verifyToken,
-    checkRole(['admin','coordinador', 'auxiliar']),
+    checkRole('admin','coordinador', 'auxiliar'),
     validateProduct,
     productController.createProduct
 );
@@ -107,14 +68,14 @@ router.get('/:id',
 
 router.put('/:id',
     verifyToken,
-    checkRole(['admin','coordinador']),
-    validateProductUpdate,
+    checkRole('admin','coordinador'),
+    validateProduct,
     productController.updateProduct
 );
 
 router.delete('/:id',
     verifyToken,
-    checkRole(['admin']),
+    checkRole('admin'),
     productController.deleteProduct
 );
 

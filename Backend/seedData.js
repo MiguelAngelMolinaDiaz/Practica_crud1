@@ -5,8 +5,8 @@
 const mongoose = require('mongoose');
 
 // dbConfig → contiene la URL de conexión a MongoDB
-// Archivo: backend/config/db.js
-const dbConfig = require('./config/db');
+// Archivo: backend/Config/db.js
+const dbConfig = require('./Config/db');
 
 // Modelos → cada uno representa una colección en MongoDB
 // Archivos: backend/models/Category.js, Subcategory.js, Product.js
