@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 // bcrypt → librería para encriptar contraseñas; no se usa directamente aquí porque
 // el modelo User tiene un pre-save hook que encripta automáticamente
-const bcrypt = require('bcrypt.js');
+const bcrypt = require('bcryptjs');
 
 // Modelo User → se usa para verificar existencia y crear nuevos usuarios
 // Archivo: backend/models/User.js
@@ -35,13 +35,25 @@ async function seed() { // Función async que inserta usuarios de prueba en la B
     }
   ];
 
-  for (const user of users) { // Itera sobre cada usuario del array para crearlo si no existe
+  for (const user of users) { // Itera sobre cada usuario del array para crearlo o sincronizar credenciales
     const exists = await User.findOne({ username: user.username }); // Busca en la BD si ya existe un usuario con ese username
     if (!exists) { // Si no existe, lo crea
       await User.create(user); // Crea el documento en la colección 'users'; el pre-save hook encripta la contraseña
       console.log(`Usuario creado: ${user.username}`); // Confirma la creación del usuario en consola
     } else { // Si ya existe, lo omite
-      console.log(`Usuario ya existe: ${user.username}`); // Informa que el usuario ya estaba en la BD
+      const hash = await bcrypt.hash(user.password, 10);
+      await User.updateOne(
+        { _id: exists._id },
+        {
+          $set: {
+            email: user.email,
+            role: user.role,
+            password: hash,
+            active: true
+          }
+        }
+      );
+      console.log(`Usuario actualizado: ${user.username}`); // Re-sincroniza credenciales para pruebas repetibles
     }
   }
 
