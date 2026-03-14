@@ -35,6 +35,7 @@ const checkRole = (...allowedRoles) => {
         // Validar que el usuario fue autenticado y verifyToken ejecutado
         // req.userRole es establecido pero verifyToken middleware
         if (!req.userRole) {
+            console.log("ROL QUE LLEGA:", req.userRole);
             return res.status(401).json({
                 success: false,
                 message: 'Token invalido o expirado'
