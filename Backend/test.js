@@ -76,7 +76,7 @@ async function runTests() { // Función principal que ejecuta todos los tests en
 
   // Login fallido
   res = await request('POST', '/auth/signin', { // Envía petición de login con contraseña incorrecta
-    username: ADMIN_USERNAME,
+    username: "admin",
     password: 'wrongpassword'  // Contraseña incorrecta para probar que el API la rechaza
   });
   log('Login fallido rechazado', !res.ok && res.status === 401, `(Status: ${res.status})`); // Verifica que el API retornó 401
