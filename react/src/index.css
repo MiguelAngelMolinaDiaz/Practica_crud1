@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;600;700;800&display=swap');
+
+/*=============================================
+  Reset CSS
+===============================================*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/*=============================================
+  Variables Globales
+===============================================*/
+
+:root {
+  --bg: #c8c7c7; /* Color base */
+  --text: #222222; /* Color de texto */
+  --muted: #555555; /* Color de texto secundario */
+  --accent: #ff3b3b; /* Color de acento para botones/enlaces */
+  --accent2: #4afdf7; /* Color de acento secundario para etiquetas y contraste */
+  --panel: rgba(255, 255, 255, 0.7); /* Color de fondo para paneles con transparencia */
+  --line: rgba(31, 42, 46, 0.12); /* linea suave para bordes */
+  --shadow: 0 20px 60px rgba(31, 42, 46, 0.16);;
+}
+
+#root{
+  min-height: 100vh;
+}
+
+body {
+  min-width: 320px;
+}
+
+/* Modelo de caja consistente en todos los elementos */

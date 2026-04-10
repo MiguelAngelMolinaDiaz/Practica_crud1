@@ -1,0 +1,257 @@
+/*=============================================
+  Fondo principal con gradiantes para dar atmosfera
+===============================================*/
+.landing{
+  min-height: 100vh;
+  padding: 2rem clamp(1rem, 2vw, 2.5rem) 3rem;
+  color: var(--text);
+  background: radial-gradient(circule at 15% 20% rgba(255, 111, 60, 0.28), transparent 28%),
+    radial-gradient(circule at 90% 25% rgba(0, 165, 168, 0.25), transparent 25%),
+    radial-gradient(15deg, #fffaf2 0% var(--bg) 45%, #eef7f5 100%);
+}
+
+/* ===========================================
+  Barra superior tipo glassmorphism
+ =========================================== */
+.topbar {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  animation: fadeUp 550ms ease both;
+}
+
+.brand {
+  margin: 0;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Hero centrado con titulo, descripcion y acciones */
+.hero {
+  max-width: 900px;
+  margin: 4.5rem auto 2.2rem;
+  text-align: center;
+  animation: fadeUp 700ms ease 120ms both;
+}
+
+.tag {
+  margin: 0;
+  color: var(--accent-2);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.hero h1 {
+  margin: 0.6rem auto 0;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.1rem, 6.8vw, 4.4rem);
+  line-height: 1.03;
+  max-width: 14ch;
+}
+
+.hero-copy {
+  margin: 1rem auto 0;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.12rem);
+}
+
+.actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* Botones reutilizables */
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--accent), #ff915e);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: #ffffff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+/* Bloque de estadisticas */
+.stats {
+  margin: 2rem auto 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stats li {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.66);
+  padding: 0.9rem 0.8rem;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
+.stats strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1.35rem;
+}
+
+/* Grilla de servicios */
+.grid-cards {
+  max-width: 1120px;
+  margin: 1.8rem auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow);
+  padding: 1.2rem;
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 0.55rem;
+  font-size: 1.25rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Seccion de proceso en contraste oscuro */
+.process {
+  max-width: 1120px;
+  margin: 1rem auto 0;
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  padding: 1.2rem;
+  background: rgba(31, 42, 46, 0.92);
+  color: #f9fcfd;
+  animation: fadeUp 640ms ease 260ms both;
+}
+
+.process h2 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+.process p {
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.footer {
+  max-width: 1120px;
+  margin: 1rem auto 0;
+  padding: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.footer p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.footer a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Efecto de revelado escalonado */
+.reveal-1,
+.reveal-2,
+.reveal-3 {
+  animation: fadeUp 650ms ease both;
+}
+
+.reveal-2 {
+  animation-delay: 120ms;
+}
+
+.reveal-3 {
+  animation-delay: 240ms;
+}
+
+@keyframes fadeUp {
+  /* Define el estado inicial de animacion */
+  from {
+    opacity: 0; /* comienza invisible */
+    transform: translateY((18px)); /* comienza en 18px mas para luego subir */
+  }
+  /* Define el estado final de animacion */
+  to {
+    opacity: 1; /*opacidade totalmente visible*/
+    transform: translateY(0); /* termina en su posicion original */
+  }
+}
+
+/* Ajustes responsive para pantallas pequeñas */
+@media (max-width: 900px) {
+  .menu {
+    display: none; /* Ocultar el menú en pantallas de 900px o menos */
+  }
+
+  .stats,
+  .grid-cards {
+    grid-template-columns: 1fr; /* Cambiar las grillas a una sola columna */
+  }
+
+  .topbar {
+    border-radius: 0.8rem; /* Reducir el radio de borde para adaptarse mejor a movil */
+  }
+}

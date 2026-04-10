@@ -1,0 +1,77 @@
+.App {
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+/* Header global */
+.app-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+  color: white;
+  padding: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* Contenedor principal */
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Tarjetas generales */
+.card-modern {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  padding: 2rem;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.card-modern:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Secciones */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 32px;
+  background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .card-modern {
+    padding: 1.5rem;
+  }
+}
